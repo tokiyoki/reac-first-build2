@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import './Header.css'
 
 function Header() {
@@ -8,12 +10,12 @@ function Header() {
     //View
     return (
         <header>
-            <a>
+            <Link to="/">
                 <img src = ""/>
-            </a>
-            <a>
+            </Link>
+            <Link to="/">
                 <h1>React First Build</h1>
-            </a>
+            </Link>
             <div class='login'>
                 <p>Welcome Jamal!</p>
             </div>
