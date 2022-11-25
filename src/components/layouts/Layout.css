@@ -11,6 +11,8 @@ div#root div.centrepane {
     max-width: 1000px;
     display: grid;
     grid-template-rows: auto auto 1fr auto;
+    /*display: flex;*/
+    flex-wrap: wrap;
 }
 
 div#root div.centrepane > main {

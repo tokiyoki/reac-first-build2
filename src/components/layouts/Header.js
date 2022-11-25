@@ -16,7 +16,7 @@ function Header() {
             <Link to="/">
                 <h1>React First Build</h1>
             </Link>
-            <div class='login'>
+            <div className='login'>
                 <p>Welcome Jamal!</p>
             </div>
         </header>
