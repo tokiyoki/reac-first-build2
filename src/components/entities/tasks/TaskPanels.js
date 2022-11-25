@@ -9,7 +9,8 @@ export default function TaskPanels({ tasks }) {
     //View
     const additionalAttributes = [
         {key: 'description', label:'Description'},
-        {key: 'isCompleted', label:'Status'}
+        {key: 'isCompleted', label:'Status'},
+        {key: 'name', label: 'Form'}
       ];
   
       return(
@@ -21,7 +22,9 @@ export default function TaskPanels({ tasks }) {
                     title={` ${task.name} (${task.taskTime})`}
                     level={1}>
                     <Panel.Static level={2}>
-                    <ObjectTable object={task} attributes={additionalAttributes} />
+                    <ObjectTable 
+                        object={task} 
+                        attributes={additionalAttributes} />
                     </Panel.Static>
                 </Panel>
                 )
