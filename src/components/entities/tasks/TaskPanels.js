@@ -1,32 +1,29 @@
+import { useState } from 'react';
 import Panel from '../../UI/Panel.js';
 import ObjectTable from '../../UI/ObjectTable.js';
+import FormObjectTable from '../../UI/FormObjectTable.js';
+import TaskPanel from './TaskPanel.js';
 
 export default function TaskPanels({ tasks }) {
     //Initialisation
-    //State
+    /*const [formErrors, setFormErrors] = useState(
+        Object.keys(attributes).reduce(
+            (accum, key) => ({...accum, [key]: undefined}),
+            {}
+        )
+    );*/
+
     //Context
+
     //Methods
     //View
-    const additionalAttributes = [
-        {key: 'description', label:'Description'},
-        {key: 'isCompleted', label:'Status'},
-        {key: 'name', label: 'Form'}
-      ];
-  
       return(
         <Panel.Container>
             {
                 tasks.map((task) => 
-                <Panel 
-                    key={task.taskID}
-                    title={` ${task.name} (${task.taskTime})`}
-                    level={1}>
-                    <Panel.Static level={2}>
-                    <ObjectTable 
-                        object={task} 
-                        attributes={additionalAttributes} />
-                    </Panel.Static>
-                </Panel>
+                <TaskPanel
+                    key = {task.taskID}
+                    task = {task}/>
                 )
             }
         </Panel.Container>

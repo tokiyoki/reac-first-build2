@@ -10,7 +10,9 @@ export default function ObjectTable({ object, attributes }) {
       <tbody>
       {
         attributes.map((attribute) => {
-          const value = typeof(object[attribute.key]) === "boolean" ? (object[attribute.key] ? "true" : "false") : object[attribute.key];
+          console.log(typeof(object[attribute.key]));
+          console.log(object[attribute.key]);
+          const value = typeof(object[attribute.key]) === "number" ? (object[attribute.key] === 1 ? "Completed" : "Not Completed") : object[attribute.key];
           return (
             <tr key={attribute.key}>
               <td className="left">{attribute.label}</td>

@@ -3,8 +3,7 @@
   import TaskPanels from '../entities/tasks/TaskPanels.js';
   
   function MyTasks() {
-    //Initialisation
-    const loggedinUserID = 0;
+    const loggedinUserID = 1;
     const endpoint = `/tasks/users/${loggedinUserID}`;
 
     //State
@@ -21,6 +20,16 @@
     };
 
     useEffect(() => { apiCall(endpoint) } , [endpoint]);
+
+    
+    //Listen to task completion
+    useEffect(()=>{
+      window.addEventListener("taskcompleted", (event) => {
+        apiCall(endpoint);
+      });
+    });
+
+    console.log(tasks);
 
     //View
     return(
