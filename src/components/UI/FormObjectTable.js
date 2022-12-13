@@ -23,9 +23,11 @@ export default function FormObjectTable({ object, formID, formErrors }) {
         console.log(response);
         let newFormAttributesArray = [];
 
-        response.result.forEach(function(recording){
-            newFormAttributesArray.push({key:recording.recordingID, label: recording.type, value: ""});
-        });
+        if(response.result){
+            response.result.forEach(function(recording){
+                newFormAttributesArray.push({key:recording.recordingID, label: recording.type, value: ""});
+            });
+        }
 
         setFormAttributes(newFormAttributesArray);
     };
