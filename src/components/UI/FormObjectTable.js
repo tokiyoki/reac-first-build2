@@ -4,102 +4,191 @@ import TaskPanels from '../entities/tasks/TaskPanels.js';
 
 import './FormObjectTable.scss';
 
-export default function FormObjectTable({ object, formID, formErrors }) {
+export default function FormObjectTable({ object = null, formErrors, setIsNewTaskForm, setIsEditForm, attributes = null, deleteFormLines }) {
     //Initialisation
-    const endpointFormLines = `/formlines/${formID}`;
+    const loggedinUserID = 1;
+    //const endpointSaveForm = `/formlines/${formID}`;
+    //const endpointCompleteTask = `/formlines/${formID}`;
+    const endpointRecordings = `/recordings/`;
+    const endpointSaveForm = `/forms/`;
+    const endpointSaveFormLine = `/formlines/`;
     const loadingMessage = 'Loading...';
 
-    const endpointTaskRecordings = `/taskrecordings/`;
-
-    const endpointCompleteTask = `/tasks/completetask/${object.taskID}`;
-
     // State
+    const [formName, setFormName] = useState(object ? object.name : "New form");
     const [formAttributes, setFormAttributes] = useState(null);
+    const [recordings, setRecordings] = useState(null);
 
     // Context
     // Methods
-    const apiCallGetFormLines = async (endpoint) => {
-        const response = await API.get(endpoint, 'GET');
-        console.log(response);
+    const getFormLines = async () => {
+        console.log(object);
+        console.log(attributes);
         let newFormAttributesArray = [];
-
-        if(response.result){
-            response.result.forEach(function(recording){
-                newFormAttributesArray.push({key:recording.recordingID, label: recording.type, value: ""});
+        let attributesNew =[];
+        //essential subset of a form contents
+        if(!attributes){
+            attributesNew = [{id:'Attribute 1', label:'Attribute 1', recordingID: 1}];
+        } else {
+            let i = 1;
+            attributes.forEach((attribute)=>{
+                attributesNew.push({id: 'Attribute '+i, label: 'Attribute ' + i, value: object['attribute'+i], recordingID: object['attrID'+i]});
+                i++;
             });
         }
+
+        attributesNew.forEach(function(attribute){
+            let value = attribute.value ? attribute.value : "";
+
+            newFormAttributesArray.push({key:attribute.id, label: attribute.label, value: value, recordingID: attribute.recordingID});
+        });
 
         setFormAttributes(newFormAttributesArray);
     };
 
-    useEffect(() => { apiCallGetFormLines(endpointFormLines) } , [endpointFormLines]);
+    useEffect(() => { getFormLines() }, []);
 
-    const apiCallSaveTaskRecordings = async (endpoint) => {
-        formAttributes.forEach( async (attribute) => {
-            const response = await API.post(endpoint, {
-                'recordingID': attribute.key,
-                'taskID': object.taskID,
-                'value': attribute.value
-            });
-            console.log(response);
+    const addFormAttribute = async () => {
+        let newFormAttributesArray = [...formAttributes];
+        console.log(newFormAttributesArray);
+        let attributeID = newFormAttributesArray.length + 1;
+        //essential subset of a form contents
+        let attributes = [{id:'Attribute ' + attributeID, label:'Attribute ' + attributeID, recordingID: 1}];
+
+        attributes.forEach(function(attribute){
+            newFormAttributesArray.push({key:attribute.id, label: attribute.label, recordingID: attribute.recordingID});
         });
-        //TODO: complete changing
+
+        setFormAttributes(newFormAttributesArray);
     };
 
-    const apiCallCompleteTask = async (endpoint) => {
-        const response = await API.post(endpoint, {});
+    const getRecordings = async (endpoint) => {
+        let allRecordingsArray = [];
+        
+        const response = await API.get(endpoint);
         console.log(response);
+        response.result.forEach(recording => {
+            allRecordingsArray.push({recordingID: recording.recordingID, type: recording.type});
+        });
+        //TODO: add retrieval of values from the database
+        setRecordings(allRecordingsArray);
     };
 
-    const submitForm = () => {
+    useEffect(() => { getRecordings(endpointRecordings)}, []);
+
+    const apiCallSaveFormLines = async (endpoint, newFormID) => {
+        formAttributes.forEach( async (attribute) => {
+            console.log(attribute);
+            const response = await API.post(endpoint, {
+                'recordingID': attribute.recordingID,
+                'formID': newFormID
+            });
+            
+        });
+    };
+
+    const apiCallSaveFormDetails = async (endpoint) => {
+        const response = await API.post(endpoint, {
+            'name': formName,
+            'userID': loggedinUserID
+        });
+        console.log(response);
+
+        return response;
+    };
+
+    const submitForm = async () => {
         //TODO: check for errors
+        
+        //save form info
+        let response1 = await apiCallSaveFormDetails(endpointSaveForm);
 
-        //send request
-        apiCallSaveTaskRecordings(endpointTaskRecordings);
+        console.log(response1);
 
-        //send task completion API call
-        apiCallCompleteTask(endpointCompleteTask);
+        //save form lines info
+        if(response1.isSuccess){
 
-        //send event task completed
-        const event = new Event('taskcompleted');
-        window.dispatchEvent(event);
-        console.log('yes');
+            await apiCallSaveFormLines(endpointSaveFormLine, response1.result.insertId);
+
+            setIsNewTaskForm(false);
+        }
+
+        rerenderForms();
     };
 
-    const handleChange = (event, recordingID) => {
+    const saveFormChanges = async () => {
+        //TODO: check for errors
+        //remove the current form
+        await deleteFormLines();
+        //save updated form info
+        await apiCallSaveFormLines(endpointSaveFormLine, object.formID);
+
+        setIsEditForm(false);
+        
+        rerenderForms();
+    };
+
+    const handleChange = (event, attributeID) => {
+        console.log(attributeID);
         let formAttributesCopy = [...formAttributes];
         //loop and find the right value to update
         formAttributesCopy.forEach((formAttCopy) => {
-            if(formAttCopy.key === recordingID) {
-                formAttCopy.value = event.target.value;
+            console.log(formAttCopy);
+            if(formAttCopy.key === attributeID) {
+                formAttCopy.recordingID = event.target.value;
             }
         });
-        console.log(formAttributes);
+        console.log(formAttributesCopy);
         setFormAttributes(formAttributesCopy);
     };
 
-    console.log(formAttributes);
+    const handleNameChange = (event) => {
+        setFormName(event.target.value);
+    };
+
+    const rerenderForms = async () => {
+        //send event task completed
+        const event = new Event('formsnumberchanged');
+        window.dispatchEvent(event);
+    };
 
     //{ formErrors[attribute.key] !== undefined ? formErrors[attribute.key] : "" }
     // View
     return (
         //check if attributes were retrieved
-        !formAttributes
+        !(formAttributes && recordings)
             ? <p>{loadingMessage}</p>
             : formAttributes.length == 0
                 ? <p>The form is empty</p>
                 : <div>
                     <table className="FormObjectTable">
                         <tbody>
+                        <tr key={0}>
+                            <td className="left">Name  </td>
+                            <td className="right">
+                                <input onChange={ event => handleNameChange(event) } 
+                                    defaultValue={formName} 
+                                    placeholder=""/>
+                            </td>
+                        </tr>
                         {
                                 formAttributes.map((attribute) => {
                                     return (
                                         <tr key={attribute.key}>
                                             <td className="left">{attribute.label}  </td>
                                             <td className="right">
-                                                <input onChange={ event => handleChange(event, attribute.key) } 
-                                                    value={attribute.value} 
-                                                    placeholder=""/>
+                                                <select onChange={ event => handleChange(event, attribute.key) } 
+                                                        defaultValue={attribute.recordingID}>
+                                                    {
+                                                        recordings.map((recording) => {
+                                                            return (
+                                                                <option key={recording.recordingID} 
+                                                                        value = {recording.recordingID}
+                                                                            >{recording.type}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
                                             </td>
                                         </tr>
                                     )
@@ -107,7 +196,14 @@ export default function FormObjectTable({ object, formID, formErrors }) {
                         } 
                         </tbody>
                     </table>
-                    <button onClick={() => submitForm()}>Submit</button>
+                    <button onClick={() => addFormAttribute()}>Add attribute</button>
+                    {
+                        object.formID == 0
+                            ?
+                            <button onClick={() => submitForm()}>Submit</button>
+                            :
+                            <button onClick={() => saveFormChanges()}>Save</button>
+                    }
                 </div>
     );
 }

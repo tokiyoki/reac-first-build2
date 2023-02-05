@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Panel from '../../UI/Panel.js';
 import ObjectTable from '../../UI/ObjectTable.js';
-import FormObjectTable from '../../UI/FormObjectTable.js';
+import FormObjectTable from '../../UI/TaskFormObjectTable.js';
 import TaskPanel from './TaskPanel.js';
 
 export default function TaskPanels({ tasks }) {

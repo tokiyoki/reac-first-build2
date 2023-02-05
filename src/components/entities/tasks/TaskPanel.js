@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Panel from '../../UI/Panel.js';
 import ObjectTable from '../../UI/ObjectTable.js';
-import FormObjectTable from '../../UI/FormObjectTable.js';
+import TaskFormObjectTable from '../../UI/TaskFormObjectTable.js';
 
 export default function TaskPanel({ task, isForm = false }) {
     //State
@@ -40,7 +40,7 @@ export default function TaskPanel({ task, isForm = false }) {
                 
                 :
                 <Panel.Static level={2}>
-                    <FormObjectTable 
+                    <TaskFormObjectTable 
                         object={task} 
                         formID={task.formID} 
                         /*formErrors= { formErrors }*/ />
