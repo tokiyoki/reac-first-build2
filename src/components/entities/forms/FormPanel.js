@@ -7,9 +7,9 @@ import API from '../../api/API.js';
 
 export default function FormPanel({formDetails, isFormEdit = false}) {
     //Initialisation
-    const getFormLinesEndpoint = `/formlines/recordings/${formDetails.formID}`;
-    const endpointDeleteFormLines = `/formlines/remove/${formDetails.formID}`;
-    const endpointDeleteFormDetails = `/forms/remove/${formDetails.formID}`;
+    const getFormLinesEndpoint = `/formlines/${formDetails.formID}`; //`/formlines/recordings/${formDetails.formID}`;
+    const endpointDeleteFormLines = `/formlines/${formDetails.formID}`;
+    const endpointDeleteFormDetails = `/forms/${formDetails.formID}`;
     //const getRecordingByIdEndpoint = `/recordings/`
     //State
     const [form, setForm] = useState(formDetails);
@@ -57,12 +57,12 @@ export default function FormPanel({formDetails, isFormEdit = false}) {
 
     const apiCallDeleteFormLines = async (endpoint) => {
         console.log(endpoint);
-        const response = await API.post(endpoint, {});
+        const response = await API.delete(endpoint, {});
         console.log(response);
     };
 
     const apiCallDeleteFormDetails = async (endpoint) => {
-        const response = await API.post(endpoint, {});
+        const response = await API.delete(endpoint, {});
         console.log(response);
     };
 

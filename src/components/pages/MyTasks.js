@@ -4,7 +4,7 @@
   
   function MyTasks() {
     const loggedinUserID = 1;
-    const endpoint = `/tasks/users/${loggedinUserID}`;
+    const endpoint = `/tasks/users/notcompleted/${loggedinUserID}`;
 
     //State
     const [tasks, setTasks] = useState(null);

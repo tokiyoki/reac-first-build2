@@ -11,7 +11,7 @@ export default function TaskFormObjectTable({ object, formID, formErrors }) {
 
     const endpointTaskRecordings = `/taskrecordings/`;
 
-    const endpointCompleteTask = `/tasks/completetask/${object.taskID}`;
+    const endpointCompleteTask = `/tasks/${object.taskID}`;
 
     // State
     const [formAttributes, setFormAttributes] = useState(null);
@@ -47,7 +47,7 @@ export default function TaskFormObjectTable({ object, formID, formErrors }) {
     };
 
     const apiCallCompleteTask = async (endpoint) => {
-        const response = await API.post(endpoint, {});
+        const response = await API.update(endpoint, { isCompleted: "1" });
         console.log(response);
     };
 
