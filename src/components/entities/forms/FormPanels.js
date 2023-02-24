@@ -23,10 +23,9 @@ export default function FormPanels({newForm = false, forms }) {
     //View
       return(
         <div className='formPanelsContainer'>
-            
             <Panel.Container>
                 <div className = "headingAndButtons">
-                    <h1 className = "left">Forms panel</h1>
+                    <h1 className = "left">Forms</h1>
                     <button className = "right" onClick={() => setIsNewTaskForm(true)}>+ New</button>
                 </div>
                 {

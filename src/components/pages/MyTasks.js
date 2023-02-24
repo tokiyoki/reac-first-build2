@@ -29,12 +29,18 @@
       });
     });
 
+    //listen to events that change number of forms]
+    useEffect(()=>{
+      window.addEventListener("tasksnumberchanged", (event) => {
+        apiCall(endpoint);
+      });
+    });
+
     console.log(tasks);
 
     //View
     return(
       <section>
-        <h1>My Tasks</h1>
         {
           !tasks
             ? <p>{loadingMessage}</p>

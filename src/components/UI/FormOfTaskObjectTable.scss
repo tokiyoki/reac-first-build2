@@ -1,0 +1,20 @@
+//Styling
+table.FormOfTaskObjectTable {
+    width: 100%;
+    margin-bottom: 10px;
+  
+    & tbody > tr > td.left {
+      text-align: left;
+      vertical-align: top;
+      width: 15%;
+      min-width: 100px;
+    }
+  
+    & tbody > tr > td.right {
+      text-align: right;
+      vertical-align: top;
+      font-weight: 400;
+      color: Black;
+      position: relative;
+    }
+  }
