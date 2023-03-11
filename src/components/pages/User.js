@@ -15,7 +15,9 @@
     //Context
     const [userMenu, setUserMenu] = useState(usrMenu);
     const location = useLocation();
-    const [forms, setForms] = useState(null);
+    //const [forms, setForms] = useState(null);
+    const [forms, setForms, formsLoadingMessage,] = useState(null);
+
     //Methods
     //Listen to task completion
     useEffect(()=>{

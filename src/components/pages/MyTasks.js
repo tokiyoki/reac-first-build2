@@ -1,14 +1,17 @@
   import { useState, useEffect } from 'react';
+  import { useLoad } from '../api/useLoad.js';
   import API, { callFetch } from '../api/API.js';
   import TaskPanels from '../entities/tasks/TaskPanels.js';
   
   function MyTasks() {
+    //Initialisation
     const loggedinUserID = 1;
     const endpoint = `/tasks/users/notcompleted/${loggedinUserID}`;
 
     //State
-    const [tasks, setTasks] = useState(null);
-    const [loadingMessage, setloadingMessage] = useState('Loading records...');
+    const [tasks, setTasks, loadingMessage, setloadingMessage] = useLoad(endpoint);
+    //const [tasks, setTasks] = useState(null);
+    //const [loadingMessage, setloadingMessage] = useState('Loading records...');
 
     //Context
     //Methods
@@ -19,7 +22,7 @@
         : setloadingMessage(response.message)
     };
 
-    useEffect(() => { apiCall(endpoint) } , [endpoint]);
+    //useEffect(() => { apiCall(endpoint) } , [endpoint]);
 
     
     //Listen to task completion

@@ -25,9 +25,12 @@ export default function TaskFormObjectTable({ object, formID, formErrors }) {
 
         if(response.result){
             response.result.forEach(function(recording){
-                newFormAttributesArray.push({key:recording.recordingID, label: recording.type, value: ""});
+                newFormAttributesArray.push({key:recording.recordingID, label: recording.recordingType, value: ""});
+                console.log(recording);
             });
         }
+
+        console.log(newFormAttributesArray);
 
         setFormAttributes(newFormAttributesArray);
     };
@@ -47,7 +50,7 @@ export default function TaskFormObjectTable({ object, formID, formErrors }) {
     };
 
     const apiCallCompleteTask = async (endpoint) => {
-        const response = await API.update(endpoint, { isCompleted: "1" });
+        const response = await API.put(endpoint, { isCompleted: "1" });
         console.log(response);
     };
 

@@ -22,7 +22,7 @@ function Navbar() {
                 <NavLink to='/signin' className={getLinkStyle}>Sign In</NavLink>
             </div>
             <div className="navItem">
-                <NavLink to='/contact' className={getLinkStyle}>Contact us</NavLink>
+                <NavLink to='/contactus' className={getLinkStyle}>Contact us</NavLink>
             </div>
         </nav>
     )
