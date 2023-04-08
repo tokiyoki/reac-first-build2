@@ -19,9 +19,6 @@ function Navbar() {
                 <NavLink to='/user' className={getLinkStyle}>User</NavLink>
             </div>
             <div className="navItem">
-                <NavLink to='/signin' className={getLinkStyle}>Sign In</NavLink>
-            </div>
-            <div className="navItem">
                 <NavLink to='/contactus' className={getLinkStyle}>Contact us</NavLink>
             </div>
         </nav>

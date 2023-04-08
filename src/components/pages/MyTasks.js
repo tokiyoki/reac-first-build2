@@ -3,18 +3,30 @@
   import API, { callFetch } from '../api/API.js';
   import TaskPanels from '../entities/tasks/TaskPanels.js';
   
-  function MyTasks() {
+  /**
+   * 
+   * @param {*} user can be 'carer' or 'patient' depending on the user type
+   */
+  function MyTasks({user={type:'patient', userID:1}}) {
     //Initialisation
-    const loggedinUserID = 1;
-    const endpoint = `/tasks/users/notcompleted/${loggedinUserID}`;
+    //const initialLoggedinUserID = (user=="patient") ? 1 : 2; // 1 user id is patient, 2 user id is carer
+    
+    //needs to be initialised first
+    const getEndpoint = (loggedinUserID) => {
+      let endpoint = `/tasks/users/notcompleted/${loggedinUserID}`;
+      return endpoint;
+    }
 
     //State
-    const [tasks, setTasks, loadingMessage, setloadingMessage] = useLoad(endpoint);
+    const [tasks, setTasks, loadingMessage, setloadingMessage] = useLoad(getEndpoint(user.userID));
+    //const [loggedinUserID, setLoggedinUserID] = useState(mainLoggedinUserID);
     //const [tasks, setTasks] = useState(null);
     //const [loadingMessage, setloadingMessage] = useState('Loading records...');
 
     //Context
     //Methods
+    
+
     const apiCall = async (endpoint) => {
       const response = await API.get(endpoint, 'GET');
       response.isSuccess
@@ -22,20 +34,20 @@
         : setloadingMessage(response.message)
     };
 
-    //useEffect(() => { apiCall(endpoint) } , [endpoint]);
+    useEffect(() => { apiCall(getEndpoint(user.userID)) } , []);//endpoint
 
     
     //Listen to task completion
     useEffect(()=>{
-      window.addEventListener("taskcompleted", (event) => {
-        apiCall(endpoint);
+      window.addEventListener("taskcompleted", async (event) => {
+        apiCall(getEndpoint(user.userID));
       });
     });
 
     //listen to events that change number of forms]
     useEffect(()=>{
-      window.addEventListener("tasksnumberchanged", (event) => {
-        apiCall(endpoint);
+      window.addEventListener("tasksnumberchanged", async (event) => {
+        apiCall(getEndpoint(user.userID));
       });
     });
 

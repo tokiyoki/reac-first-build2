@@ -6,13 +6,14 @@ import './Layout.css';
 
 function Layout(props) {
     //Properties
+    console.log(props.user);
     //Hooks
     //context
     //Methods
     //View
     return (
         <div className="centrepane">
-            <Header />
+            <Header user={props.user} changeUser={props.changeUser} userDependentIDs={props.userDependentIDs}/>
             <Navbar />
             <main>
                 {props.children}

@@ -1,11 +1,12 @@
   import { useState, useEffect } from 'react';
+  import { useLoad } from '../api/useLoad.js';
   import { useLocation } from 'react-router-dom';
   import API from '../api/API.js';
   import Menu from '../UI/Menu.js';
   import FormPanels from '../entities/forms/FormPanels.js';
   
 
-  function User(usrMenu = true) {
+  function User({usrMenu = true}) {
     const loggedinUserID = 1;
     const getFormsEndpoint = `/forms/users/${loggedinUserID}`;
 
@@ -16,7 +17,7 @@
     const [userMenu, setUserMenu] = useState(usrMenu);
     const location = useLocation();
     //const [forms, setForms] = useState(null);
-    const [forms, setForms, formsLoadingMessage,] = useState(null);
+    const [forms, setForms, formsLoadingMessage,] = useLoad(getFormsEndpoint);
 
     //Methods
     //Listen to task completion
@@ -48,7 +49,7 @@
     });
 
     //get initial list of forms
-    useEffect(() => { apiCallGetForms(getFormsEndpoint) }, []);
+    //useEffect(() => { apiCallGetForms(getFormsEndpoint) }, []);
 
     //View
     return(
