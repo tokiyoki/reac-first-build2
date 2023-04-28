@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Panel from '../../UI/Panel.js';
-import FormObjectTable from '../../UI/FormObjectTable.js';
+import ModifyFormInputTable from '../inputs/ModifyFormInputTable.js';
 
-export default function FormPanel({formDetails, setIsNewTaskForm}) {
+export default function NewFormPanel({formDetails, setIsNewTaskForm, rerenderForms, loggedUser}) {
     //State
     const [form, setForm] = useState(formDetails);
     /*const [formErrors, setFormErrors] = useState(
@@ -27,14 +27,17 @@ export default function FormPanel({formDetails, setIsNewTaskForm}) {
         <Panel 
             key={form.formID}
             title={` ${"New form"}`}
-            level={1}>
+            level={1}
+            isOpen={true}>
                 
             {
                 <Panel.Static level={2}>
-                    <FormObjectTable 
+                    <ModifyFormInputTable 
                         object={form}
                         setIsNewTaskForm={setIsNewTaskForm}
-                        /*formErrors= { formErrors }*/ />
+                        /*formErrors= { formErrors }*/ 
+                        rerenderForms={rerenderForms}
+                        loggedUser={loggedUser}/>
                     <button onClick={() => cancelNewForm()}>Cancel</button>
                 </Panel.Static>
             }  

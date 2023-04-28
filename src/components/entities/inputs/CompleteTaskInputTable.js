@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import API, { callFetch } from '../api/API.js';
-import TaskPanels from '../entities/tasks/TaskPanels.js';
+import API, { callFetch } from '../../api/API.js';
+import TaskPanels from '../tasks/TaskPanels.js';
 
-import './TaskFormObjectTable.scss';
+import InputTable from '../../UI/InputTable.js';
+import '../../UI/InputTable.scss';
 
-export default function TaskFormObjectTable({ object, formID, formErrors }) {
+export default function CompleteTaskInputTable({ object, formID, formErrors, setIsTaskForm }) {
     //Initialisation
     const endpointFormLines = `/formlines/${formID}`;
     const loadingMessage = 'Loading...';
@@ -25,7 +26,7 @@ export default function TaskFormObjectTable({ object, formID, formErrors }) {
 
         if(response.result){
             response.result.forEach(function(recording){
-                newFormAttributesArray.push({key:recording.recordingID, label: recording.recordingType, value: ""});
+                newFormAttributesArray.push({key:recording.recordingID, label: recording.recordingType, value: "", type: "number"});
                 console.log(recording);
             });
         }
@@ -92,7 +93,7 @@ export default function TaskFormObjectTable({ object, formID, formErrors }) {
             : formAttributes.length == 0
                 ? <p>The form is empty</p>
                 : <div>
-                    <table className="TaskFormObjectTable">
+                    {/*<table className="TaskFormObjectTable">
                         <tbody>
                         {
                                 formAttributes.map((attribute) => {
@@ -108,8 +109,10 @@ export default function TaskFormObjectTable({ object, formID, formErrors }) {
                                     )
                                 })
                         } 
-                        </tbody>
-                    </table>
+                    </tbody>
+                    </table>*/}
+                    <InputTable inputs={formAttributes} handleChange={handleChange}/>
+                    <button onClick={() => setIsTaskForm(false)}>Back</button>
                     <button onClick={() => submitForm()}>Submit</button>
                 </div>
     );

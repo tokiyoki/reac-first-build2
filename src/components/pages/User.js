@@ -6,16 +6,19 @@
   import FormPanels from '../entities/forms/FormPanels.js';
   
 
-  function User({usrMenu = true}) {
-    const loggedinUserID = 1;
+  function User({usrMenu = true, loggedUser}) {
+    const loggedinUserID = loggedUser.userID;
     const getFormsEndpoint = `/forms/users/${loggedinUserID}`;
+    
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const isCreatingForm = searchParams.get('createForm');
 
     //Properties
     const items = [{text:"Forms", order: 1}];
     //Hooks
     //Context
     const [userMenu, setUserMenu] = useState(usrMenu);
-    const location = useLocation();
     //const [forms, setForms] = useState(null);
     const [forms, setForms, formsLoadingMessage,] = useLoad(getFormsEndpoint);
 
@@ -34,19 +37,33 @@
       }
     }, [location]);
 
+    //navigate to forms submenu
+    useEffect(()=>{
+      if(isCreatingForm){
+        setUserMenu(false);
+      }
+    });
+
     const apiCallGetForms = async (endpoint) => {
       const response = await API.get(endpoint, 'GET');
       if(response.isSuccess){
         setForms(response.result)
+      } else {
+        setForms([])
       }
     };
 
     //listen to events that change number of forms]
-    useEffect(()=>{
+    /*useEffect(()=>{
       window.addEventListener("formsnumberchanged", (event) => {
         apiCallGetForms(getFormsEndpoint);
       });
-    });
+    });*/
+
+    const rerenderForms = async () => {
+      console.log("INSIDE RERENDERING");
+      await apiCallGetForms(getFormsEndpoint);
+    };
 
     //get initial list of forms
     //useEffect(() => { apiCallGetForms(getFormsEndpoint) }, []);
@@ -57,7 +74,14 @@
             {
               userMenu 
                 ? <Menu heading={"User Profile"} items={items}/>
-                : <FormPanels forms = {forms}></FormPanels>
+                : 
+                  !forms 
+                    ? "Loading..."
+                    : <FormPanels forms = {forms} 
+                                  newForm = {isCreatingForm ? true : false}
+                                  rerenderForms = {rerenderForms}
+                                  loggedUser = {loggedUser}>
+                      </FormPanels>
             }
       </section>
     )

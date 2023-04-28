@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import Panel from '../../UI/Panel.js';
-import ObjectTable from '../../UI/ObjectTable.js';
-import FormObjectTable from '../../UI/TaskFormObjectTable.js';
 import TaskPanel from './TaskPanel.js';
 import NewTaskPanel from './NewTaskPanel.js';
 import './TaskPanels.scss';
 
-export default function TaskPanels({ newTask = false, tasks }) {
+export default function TaskPanels({ newTask = false, tasks, loggedUser, mainLoggedUser, rerenderTasks }) {
     //Initialisation
     /*const [formErrors, setFormErrors] = useState(
         Object.keys(attributes).reduce(
@@ -29,14 +27,16 @@ export default function TaskPanels({ newTask = false, tasks }) {
             <Panel.Container>
                 <div className = "headingAndButtons">
                     <h1 className = "left">My tasks</h1>
-                    <button className = "right" onClick={() => setIsNewTaskPanel(true)}>+ New</button>
+                    <button className = "right" id = "newTaskButton" onClick={() => setIsNewTaskPanel(true)}>+ New</button>
                 </div>
                 {
                     isNewTaskPanel 
                         ? 
                             <div>
                                 <NewTaskPanel 
-                                    setIsNewTaskPanel = {setIsNewTask}/>
+                                    setIsNewTaskPanel = {setIsNewTask}
+                                    loggedUser = {loggedUser}
+                                    rerenderTasks = {rerenderTasks}/>
                             </div>
                         :""
                 }
@@ -44,7 +44,10 @@ export default function TaskPanels({ newTask = false, tasks }) {
                     tasks.map((task) => 
                     <TaskPanel
                         key = {task.taskID}
-                        task = {task}/>
+                        task = {task}
+                        loggedMain ={mainLoggedUser}
+                        loggedUser ={loggedUser}
+                        rerenderTasks = {rerenderTasks}/>
                     )
                 }
             </Panel.Container>

@@ -1,20 +1,33 @@
 import { useState, useEffect } from 'react';
-import API, { callFetch } from '../api/API.js';
-import TaskPanels from '../entities/tasks/TaskPanels.js';
+import API, { callFetch } from '../../api/API.js';
+import TaskPanels from '../tasks/TaskPanels.js';
+import { useNavigate } from 'react-router-dom';
 
-import './FormOfTaskObjectTable.scss';
+import '../../UI/InputTable.scss';
+import InputTable from '../../UI/InputTable.js';
 
-export default function FormOfTaskObjectTable({ object=null, attributes, setIsNewTaskPanel }) {
+export default function ModifyTaskInputTable({ object=null, attributes, setIsNewTaskPanel, loggedUser, rerenderTasks }) {
     //Initialisation
-    const loggedinUserID = 1;
+    const loggedinUserID = loggedUser;
     const endpointGetForms = `/forms/` + loggedinUserID;
     const endpointCreateTask = `/tasks/`;
     const loadingMessage = 'Loading...';
 
+    const navigate = useNavigate();
+
+    const taskNameInitial = object ? object.name : "New task";
+    const taskTimeInitial = object ? object.taskTime : "00:00:00";
+
+    const newAttributes = [
+        {key: 'name', label:'Name', value: 'New task', type: 'text'},
+        {key: 'taskTime', label:'Task Time', value: '00:00:00', type: 'time'},
+         ...attributes];
+
+    console.log(newAttributes);
     // State
-    const [taskName, setTaskName] = useState(object ? object.name : "New task");
-    const [taskTime, setTaskTime] = useState(object ? object.taskTime : "00:00:00");
-    const [taskAttributes, setTaskAttributes] = useState(attributes);
+    //const [taskName, setTaskName] = useState();
+    //const [taskTime, setTaskTime] = useState();
+    const [taskAttributes, setTaskAttributes] = useState(newAttributes);
     const [forms, setForms] = useState(null);
 
     console.log(setIsNewTaskPanel);
@@ -78,11 +91,15 @@ export default function FormOfTaskObjectTable({ object=null, attributes, setIsNe
         
         const response = await API.get(endpoint);
         console.log(response);
-        response.result.forEach(form => {
-            allFormsArray.push({formID: form.FormID, name: form.name});
-        });
-        //TODO: add retrieval of values from the database
-        setForms(allFormsArray);
+        if(response.isSuccess){
+                response.result.forEach(form => {
+                allFormsArray.push({formID: form.FormID, name: form.name});
+            });
+            //TODO: add retrieval of values from the database
+            setForms(allFormsArray);
+        } else {
+            setForms([])
+        }
     };
 
     useEffect(() => { getForms(endpointGetForms)}, []);
@@ -129,13 +146,14 @@ export default function FormOfTaskObjectTable({ object=null, attributes, setIsNe
     */
 
     const apiCallSaveTaskDetails = async (endpoint) => {
+        console.log(attributes);
         const response = await API.post(endpoint, {
-            'taskTime': taskTime, 
-            'name': taskName,
-            'description': attributes[0].value,
-            'formID': attributes[2].value,
+            'taskTime': taskAttributes[1].value, 
+            'name': taskAttributes[0].value,
+            'description': taskAttributes[2].value,
+            'formID': taskAttributes[3].value,
             'userID': loggedinUserID,
-            'isCompleted': attributes[1].value
+            'isCompleted': 0
         });
         console.log(response);
 
@@ -161,6 +179,11 @@ export default function FormOfTaskObjectTable({ object=null, attributes, setIsNe
         rerenderTasks();
     };
 
+    const createNewForm = async () => {
+        //navigate to form page and create new form
+        navigate('/user?createForm=true', {replace: true} );
+    };
+
     const handleChange = (event, attributeID) => {
         console.log(attributeID);
         let formAttributesCopy = [...taskAttributes];
@@ -175,19 +198,19 @@ export default function FormOfTaskObjectTable({ object=null, attributes, setIsNe
         setTaskAttributes(formAttributesCopy);
     };
 
-    const handleNameChange = (event) => {
+    /*const handleNameChange = (event) => {
         setTaskName(event.target.value);
     };
 
     const handleTimeChange = (event) => {
         setTaskTime(event.target.value);
-    };
+    };*/
 
-    const rerenderTasks = async () => {
+    /*const rerenderTasks = async () => {
         //send event task completed
         const event = new Event('tasksnumberchanged');
         window.dispatchEvent(event);
-    };
+    };*/
 
     //{ formErrors[attribute.key] !== undefined ? formErrors[attribute.key] : "" }
     // View
@@ -196,24 +219,8 @@ export default function FormOfTaskObjectTable({ object=null, attributes, setIsNe
         !(taskAttributes && forms)
             ? <p>{loadingMessage}</p>
             : <div>
-                <table className="FormOfTaskObjectTable">
+                {/*<table className="InputTable">
                     <tbody>
-                    <tr key={0}>
-                        <td className="left">Name  </td>
-                        <td className="right">
-                            <input onChange={ event => handleNameChange(event) } 
-                                defaultValue={taskName} 
-                                placeholder=""/>
-                        </td>
-                    </tr>
-                    <tr key={1}>
-                        <td className="left">Time  </td>
-                        <td className="right">
-                            <input onChange={ event => handleTimeChange(event) } 
-                                defaultValue={taskTime} 
-                                placeholder=""/>
-                        </td>
-                    </tr>
                     {
                             taskAttributes.map((attribute) => {
                                 return (
@@ -221,32 +228,25 @@ export default function FormOfTaskObjectTable({ object=null, attributes, setIsNe
                                         <td className="left">{attribute.label}  </td>
                                         <td className="right">
                                             <input onChange={ event => handleChange(event, attribute.key) }
-                                                   defaultValue={""} >
+                                                   value={attribute.value} 
+                                                   placeholder="" >
 
                                             </input>
-                                            {/*<select onChange={ event => handleChange(event, attribute.key) } 
-                                                    defaultValue={attribute.recordingID}>
-                                                {
-                                                    recordings.map((recording) => {
-                                                        return (
-                                                            <option key={recording.recordingID} 
-                                                                    value = {recording.recordingID}
-                                                                        >{recording.type}</option>
-                                                        )
-                                                    })
-                                                }
-                                            </select>*/}
                                         </td>
                                     </tr>
                                 )
                             })
                     } 
                     </tbody>
-                </table>
+                </table>*/}
+                <InputTable inputs={taskAttributes} handleChange={handleChange}/>
                 {
                     //object.taskID == 0
                         //?
-                        <button onClick={() => submitTask()}>Submit</button>
+                        <div>
+                            <button onClick={() => submitTask()}>Submit</button>
+                            <button onClick={() => createNewForm()}>New form</button>
+                        </div>
                         //:
                         //<button onClick={() => saveTaskChanges()}>Save</button>
                 }

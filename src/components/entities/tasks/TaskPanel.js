@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import Panel from '../../UI/Panel.js';
 import ObjectTable from '../../UI/ObjectTable.js';
-import TaskFormObjectTable from '../../UI/TaskFormObjectTable.js';
+import CompleteTaskInputTable from '../inputs/CompleteTaskInputTable.js';
 import API from '../../api/API.js';
 
-export default function TaskPanel({ task, isForm = false }) {
+export default function TaskPanel({ task, isForm = false, loggedMain, loggedUser, rerenderTasks }) {
     //Initialisation
     const removeTaskEndpoint = '/tasks/' + task.taskID;
     //State
@@ -29,19 +29,19 @@ export default function TaskPanel({ task, isForm = false }) {
         console.log(response);
     };
 
-    const rerenderTasks = async () => {
+    /*const rerenderTasks = async () => {
         //send event task completed
         const event = new Event('tasksnumberchanged');
         window.dispatchEvent(event);
-    };
+    };*/
 
     //View
     const additionalAttributes = [
         {key: 'description', label:'Description'},
         {key: 'isCompleted', label:'Status'},
-        {key: 'name', label: 'Form'}
+        {key: 'formName', label: 'Form'}
       ];
-  
+
       return(
         <Panel 
             key={task.taskID}
@@ -54,17 +54,21 @@ export default function TaskPanel({ task, isForm = false }) {
                     <ObjectTable 
                         object={task} 
                         attributes={additionalAttributes} />
-                    <button onClick={() => setIsTaskForm(true)}>Complete</button>
                     <button onClick={() => removeTask()}>Remove</button>
+                    {
+                        (loggedMain === loggedUser) ?
+                            <button onClick={() => setIsTaskForm(true)}>Complete</button>
+                        :""
+                    }
                 </Panel.Static>
                 
                 :
                 <Panel.Static level={2}>
-                    <TaskFormObjectTable 
+                    <CompleteTaskInputTable 
                         object={task} 
-                        formID={task.formID} 
+                        formID={task.formID}
+                        setIsTaskForm={setIsTaskForm} 
                         /*formErrors= { formErrors }*/ />
-                    <button onClick={() => setIsTaskForm(false)}>Back</button>
                 </Panel.Static>
             }
         </Panel>

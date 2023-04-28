@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 
 import API, { callFetch } from '../api/API.js';
 
+import './SignIn.scss';
+
 function SignIn({logUserIn}) {
     //Properties
     const getUserEndpoint = "/users/";
@@ -36,20 +38,28 @@ function SignIn({logUserIn}) {
 
         navigate('/', {replace: true} );
     }
+
+    const changeUsername = (username) => {
+        document.getElementById("username").value = username;
+    }
     //View
     return(
-        <div>
-            <h1>Sign In</h1>
-            <div>
-                <div>Username</div>
-                <input id = "username" disabled='disabled'/>
-                <div>Password</div>
-                <input id = "password" disabled='disabled'/><br/>
-                <label>Carer</label>
-                <input type='radio' name='type' value='carer'/><br/>
-                <label>Patient</label>
-                <input type='radio' name='type' value='patient' id="radiopatient" defaultChecked/><br/>
-                <button onClick={mockLogin}>Login</button>
+        <div id = "signInPageContainer">
+            <div id="signInMainContainer">
+                <h1 id='mainHeading'>Sign In</h1>
+                <div>
+                    <div>Username</div>
+                    <input className='login' id = "username" disabled='disabled' value='1'/>
+                    <div>Password</div>
+                    <input className='login' id = "password" disabled='disabled'/><br/>
+                    <div id = "loginRadioGroup">
+                        <label>Carer</label>
+                        <input type='radio' name='type' value='carer' onChange={(e)=>{changeUsername(2)}}/><br/>
+                        <label>Patient</label>
+                        <input type='radio' name='type' value='patient' id="radiopatient" defaultChecked onChange={(e)=>{changeUsername(1)}}/><br/>
+                    </div>
+                    <button onClick={mockLogin}>Login</button>
+                </div>
             </div>
         </div>
     )

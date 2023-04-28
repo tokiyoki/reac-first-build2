@@ -5,7 +5,12 @@ nav {
     width: 100%;
 }
 
-nav div.navItem { padding: 10px; }
-nav div.navItem:hover { background-color:rgb(148, 229, 155); }
+nav div.navItem { padding: 10px; text-decoration: none; }
+nav div.navItem:hover { background-color:rgb(129, 199, 135); }
 nav div.navItem a { color: White; text-decoration: none; }
 nav div.navItem a.navSelected { color: Black }
+
+nav a.navItem { padding: 10px; }
+nav a.navItem:hover { background-color:rgb(129, 199, 135); }
+nav a { color: White; text-decoration: none; }
+nav a.navSelected { color: Black }

@@ -53,8 +53,8 @@ function App() {
     <BrowserRouter>
       <Layout user={mainLoggedinUser} changeUser={changeUser} userDependentIDs={userDependentIDs} >
         <Routes>
-          <Route exact path='/' element={ (loggedinUser) ? <MyTasks user={loggedinUser} /> : <SignIn logUserIn={ logUserIn }/>} />
-          <Route path='/user' element={ (loggedinUser) ? <User /> : <SignIn logUserIn={ logUserIn }/>} />
+          <Route exact path='/' element={ (loggedinUser) ? <MyTasks user={loggedinUser} mainUser={mainLoggedinUser} /> : <SignIn logUserIn={ logUserIn }/>} />
+          <Route path='/user' element={ (loggedinUser) ? <User loggedUser={loggedinUser} /> : <SignIn logUserIn={ logUserIn }/>} />
           <Route path='/contactus' element={ (loggedinUser) ? <ContactUs /> : <SignIn logUserIn={ logUserIn }/>} />
           <Route path='*' element={<PageNotFound />} />
         </Routes>

@@ -43,8 +43,8 @@ function Header({user, changeUser, userDependentIDs=[]}) {
                 </div>
                 :
                 <div className='login'>
-                    <p>Account</p>
-                    <select onChange={ event => swapUser(event) } 
+                    <p id = "accountLabel">Account</p>
+                    <select id = "accountSelect" onChange={ event => swapUser(event) } 
                             defaultValue={user.userID}>
                         <option key={"account"+user.userID} 
                                         value={user.userID} 

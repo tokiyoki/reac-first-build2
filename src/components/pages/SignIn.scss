@@ -1,0 +1,40 @@
+#loginRadioGroup{
+    display: flex;
+    justify-content: center;
+}
+
+#loginRadioGroup *{
+    float: left;
+    margin: 5px;
+    margin-bottom: 20px;
+}
+
+#mainHeading {
+    padding-bottom: 30px;
+    margin: auto;
+    text-align: center;
+    padding-top: 30px;
+}
+
+#signInMainContainer {
+    background: white;
+    margin: auto;
+    max-width: 60%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+#signInPageContainer {
+    height: 75%;
+}
+
+#signInMainContainer *{
+    text-align: center;
+    align-items: center;
+}
+
+#signInMainContainer .login{
+    margin-bottom: 20px;
+    text-align: left;
+    padding-left: 10px;
+}

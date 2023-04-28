@@ -9,11 +9,11 @@
     7:   #e5f2ff
 );*/
 $PanelColors: (
-    0:   #008000,
-    1:   #00b318,
-    2:   #00e60c,
-    3:   #1aff2d,
-    4:   #4dff65,
+    0:   #067e06,
+    1:   #04be1d,
+    2:   #10dd1a,
+    3:   #29eb39,
+    4:   #4ee662,
     5:   #80ff95,
     6:   #b3ffb9,
     7:   #e5ffe6
@@ -100,6 +100,15 @@ div.Panel {
             letter-spacing: 1px; 
           }
         }
+        & > header:hover {
+            background: GetPanelColor(2); 
+            & > span.title {
+              color: GetPanelColor(7); 
+              text-transform: uppercase; 
+              font-weight: 600; 
+              letter-spacing: 1px; 
+            }
+          }
       }
     &.PanelLevel2 {
         & > main { border: 1px solid GetPanelColor(4); }

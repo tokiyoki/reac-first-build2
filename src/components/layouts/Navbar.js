@@ -12,15 +12,15 @@ function Navbar() {
     //View
     return (
         <nav>
-            <div className="navItem">
-                <NavLink to='/' className={getLinkStyle}>Home</NavLink>
-            </div>
-            <div className="navItem">
-                <NavLink to='/user' className={getLinkStyle}>User</NavLink>
-            </div>
-            <div className="navItem">
-                <NavLink to='/contactus' className={getLinkStyle}>Contact us</NavLink>
-            </div>
+            <NavLink to='/' className={getLinkStyle}>
+                <div className="navItem">Home</div>
+            </NavLink>
+            <NavLink to='/user' className={getLinkStyle}>
+                <div className="navItem">User</div>
+            </NavLink>
+            <NavLink to='/contactus' className={getLinkStyle}>
+                <div className="navItem">Contact us</div>
+            </NavLink>
         </nav>
     )
 }

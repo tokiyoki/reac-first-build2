@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import API, { callFetch } from '../api/API.js';
-import TaskPanels from '../entities/tasks/TaskPanels.js';
+import API, { callFetch } from '../../api/API.js';
+import TaskPanels from '../tasks/TaskPanels.js';
 
-import './FormObjectTable.scss';
+import '../../UI/InputTable.scss';
+import ValidatedInput from '../../UI/ValidatedInput.js';
 
-export default function FormObjectTable({ object = null, formErrors, setIsNewTaskForm, setIsEditForm, attributes = null, deleteFormLines }) {
+export default function ModifyFormInputTable({ object = null, formErrors, setIsNewTaskForm, setIsEditForm, attributes = null, deleteFormLines, rerenderForms, loggedUser, rerenderFormLines }) {
     //Initialisation
-    const loggedinUserID = 1;
+    const loggedinUserID = loggedUser.userID;
     //const endpointSaveForm = `/formlines/${formID}`;
     //const endpointCompleteTask = `/formlines/${formID}`;
     const endpointRecordings = `/recordings/`;
@@ -77,13 +78,14 @@ export default function FormObjectTable({ object = null, formErrors, setIsNewTas
     useEffect(() => { getRecordings(endpointRecordings)}, []);
 
     const apiCallSaveFormLines = async (endpoint, newFormID) => {
+        console.log(newFormID);
         formAttributes.forEach( async (attribute) => {
             console.log(attribute);
             const response = await API.post(endpoint, {
                 'recordingID': attribute.recordingID,
                 'formID': newFormID
             });
-            
+            console.log(response);
         });
     };
 
@@ -108,7 +110,7 @@ export default function FormObjectTable({ object = null, formErrors, setIsNewTas
         //save form lines info
         if(response1.isSuccess){
 
-            await apiCallSaveFormLines(endpointSaveFormLine, response1.result.insertId);
+            await apiCallSaveFormLines(endpointSaveFormLine, response1.result[0].formID);
 
             setIsNewTaskForm(false);
         }
@@ -123,9 +125,13 @@ export default function FormObjectTable({ object = null, formErrors, setIsNewTas
         //save updated form info
         await apiCallSaveFormLines(endpointSaveFormLine, object.formID);
 
+        console.log("BEFORE RERENDERING");
+
         setIsEditForm(false);
         
-        rerenderForms();
+        await rerenderForms();
+
+        rerenderFormLines();
     };
 
     const handleChange = (event, attributeID) => {
@@ -146,11 +152,11 @@ export default function FormObjectTable({ object = null, formErrors, setIsNewTas
         setFormName(event.target.value);
     };
 
-    const rerenderForms = async () => {
+    /*const rerenderForms = async () => {
         //send event task completed
         const event = new Event('formsnumberchanged');
         window.dispatchEvent(event);
-    };
+    };*/
 
     //{ formErrors[attribute.key] !== undefined ? formErrors[attribute.key] : "" }
     // View
@@ -161,7 +167,7 @@ export default function FormObjectTable({ object = null, formErrors, setIsNewTas
             : formAttributes.length == 0
                 ? <p>The form is empty</p>
                 : <div>
-                    <table className="FormObjectTable">
+                    <table className="InputTable">
                         <tbody>
                         <tr key={0}>
                             <td className="left">Name  </td>
@@ -177,7 +183,7 @@ export default function FormObjectTable({ object = null, formErrors, setIsNewTas
                                         <tr key={attribute.key}>
                                             <td className="left">{attribute.label}  </td>
                                             <td className="right">
-                                                <select onChange={ event => handleChange(event, attribute.key) } 
+                                                {/*<select onChange={ event => handleChange(event, attribute.key) } 
                                                         defaultValue={attribute.recordingID}>
                                                     {
                                                         recordings.map((recording) => {
@@ -188,7 +194,12 @@ export default function FormObjectTable({ object = null, formErrors, setIsNewTas
                                                             )
                                                         })
                                                     }
-                                                </select>
+                                                </select>*/}
+                                                {<ValidatedInput type={"select"}
+                                                                input={attribute}
+                                                                handleChange={handleChange}
+                                                                defaultValue={attribute.recordingID}
+                                                                possibleValues={recordings}/>}
                                             </td>
                                         </tr>
                                     )

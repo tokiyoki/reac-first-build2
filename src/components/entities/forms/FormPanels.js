@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import Panel from '../../UI/Panel.js';
 import FormPanel from './FormPanel.js';
 import NewFormPanel from './NewFormPanel.js';
 import './FormPanels.scss';
 
-export default function FormPanels({newForm = false, forms }) {
+export default function FormPanels({newForm = false, forms, rerenderForms, loggedUser }) {
     //Initialisation
     /*const [formErrors, setFormErrors] = useState(
         Object.keys(attributes).reduce(
@@ -34,7 +35,9 @@ export default function FormPanels({newForm = false, forms }) {
                             <div>
                                 <NewFormPanel 
                                     formDetails = {{formID: 0, formName:""}}
-                                    setIsNewTaskForm = {setIsNewTaskForm}/>
+                                    setIsNewTaskForm = {setIsNewTaskForm}
+                                    rerenderForms={rerenderForms}
+                                    loggedUser={loggedUser}/>
                             </div>
                         :""
                 }
@@ -43,7 +46,9 @@ export default function FormPanels({newForm = false, forms }) {
                     forms.map((form) => 
                     <FormPanel
                         key = {form.formID}
-                        formDetails = {form} />
+                        formDetails = {form} 
+                        rerenderForms={rerenderForms}
+                        loggedUser={loggedUser}/>
                     )
                 }
             </Panel.Container>

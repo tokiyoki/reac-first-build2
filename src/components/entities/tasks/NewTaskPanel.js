@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import Panel from '../../UI/Panel.js';
 import ObjectTable from '../../UI/ObjectTable.js';
-import FormOfTaskObjectTable from '../../UI/FormOfTaskObjectTable.js';
+import ModifyTaskInputTable from '../inputs/ModifyTaskInputTable.js';
 
-export default function NewTaskPanel({setIsNewTaskPanel}) {
+export default function NewTaskPanel({setIsNewTaskPanel, loggedUser, rerenderTasks}) {
     //State
     //const [isTaskForm, setIsTaskForm] = useState(isForm);
     /*const [formErrors, setFormErrors] = useState(
@@ -26,23 +26,25 @@ export default function NewTaskPanel({setIsNewTaskPanel}) {
     }
     //View
     const additionalAttributes = [
-        {key: 'description', label:'Description', value: ''},
-        {key: 'isCompleted', label:'Status', value: false},
-        {key: 'form', label: 'Form', value:''}
+        {key: 'description', label:'Description', value: '', type: 'text'},
+        {key: 'form', label: 'Form', value:'', type: 'number'}
       ];
   
       return(
         <Panel 
             key={task.taskID}
             title={` ${task.name} (${task.taskTime})`}
-            level={1}>
+            level={1}
+            isOpen={true}>
                 
             {
                 <Panel.Static level={2}>
-                    <FormOfTaskObjectTable 
+                    <ModifyTaskInputTable 
                         object={task} 
                         attributes={additionalAttributes}
-                        setIsNewTaskPanel={setIsNewTask} />
+                        setIsNewTaskPanel={setIsNewTask}
+                        loggedUser={loggedUser} 
+                        rerenderTasks={rerenderTasks}/>
                 </Panel.Static>
             }  
         </Panel>

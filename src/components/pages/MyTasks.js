@@ -7,7 +7,7 @@
    * 
    * @param {*} user can be 'carer' or 'patient' depending on the user type
    */
-  function MyTasks({user={type:'patient', userID:1}}) {
+  function MyTasks({user={type:'patient', userID:1}, mainUser}) {
     //Initialisation
     //const initialLoggedinUserID = (user=="patient") ? 1 : 2; // 1 user id is patient, 2 user id is carer
     
@@ -31,7 +31,9 @@
       const response = await API.get(endpoint, 'GET');
       response.isSuccess
         ? setTasks(response.result)
-        : setloadingMessage(response.message)
+        : response.message === "Error recovering tasks: status code 404"
+          ? setTasks([])
+          : setloadingMessage(response.message)
     };
 
     useEffect(() => { apiCall(getEndpoint(user.userID)) } , []);//endpoint
@@ -45,13 +47,15 @@
     });
 
     //listen to events that change number of forms]
-    useEffect(()=>{
+    /*useEffect(()=>{
       window.addEventListener("tasksnumberchanged", async (event) => {
-        apiCall(getEndpoint(user.userID));
+        
       });
-    });
+    });*/
 
-    console.log(tasks);
+    const rerenderTasks = () => {
+      apiCall(getEndpoint(user.userID));
+    };
 
     //View
     return(
@@ -59,9 +63,7 @@
         {
           !tasks
             ? <p>{loadingMessage}</p>
-            : tasks.length === 0
-              ? <p>No tasks found</p>
-              : <TaskPanels tasks={tasks}/>
+            : <TaskPanels tasks={tasks} loggedUser={user.userID} mainLoggedUser={mainUser.userID} rerenderTasks={rerenderTasks}/>
         }
       </section>
     )

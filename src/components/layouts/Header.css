@@ -34,3 +34,12 @@ header a h1 {
     align-items: flex-end;
  }
 
+ #accountLabel {
+    padding-right: 8px;
+    font-weight: bolder;
+ }
+
+ #accountSelect {
+    color: gray;
+    border-color: gray;
+ }

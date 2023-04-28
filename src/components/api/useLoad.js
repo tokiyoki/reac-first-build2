@@ -10,9 +10,12 @@ export function useLoad(endpoint) {
   // Methods
   const loadRecords = useCallback(async () => {
     const response = await API.get(endpoint);
-    response.isSuccess
-      ? setRecords(response.result)
-      : setLoadingMessage(response.message)
+    if(response.isSuccess){
+      setRecords(response.result)
+    } else {
+      setLoadingMessage(response.message); 
+      setRecords([]);
+    }
   },[endpoint]);
 
   useEffect(() => { loadRecords() }, [loadRecords]);
