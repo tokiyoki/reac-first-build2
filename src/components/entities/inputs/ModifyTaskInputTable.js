@@ -5,11 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 import '../../UI/InputTable.scss';
 import InputTable from '../../UI/InputTable.js';
+import ValidatedInput from '../../UI/ValidatedInput.js';
 
-export default function ModifyTaskInputTable({ object=null, attributes, setIsNewTaskPanel, loggedUser, rerenderTasks }) {
+export default function ModifyTaskInputTable({ object=null, attributes, formAttributeInitial, setIsNewTaskPanel, loggedUser, rerenderTasks }) {
     //Initialisation
     const loggedinUserID = loggedUser;
-    const endpointGetForms = `/forms/` + loggedinUserID;
+    const endpointGetForms = `/forms/users/` + loggedinUserID;
     const endpointCreateTask = `/tasks/`;
     const loadingMessage = 'Loading...';
 
@@ -28,6 +29,7 @@ export default function ModifyTaskInputTable({ object=null, attributes, setIsNew
     //const [taskName, setTaskName] = useState();
     //const [taskTime, setTaskTime] = useState();
     const [taskAttributes, setTaskAttributes] = useState(newAttributes);
+    const [formAttribute, setFormAttribute] = useState(formAttributeInitial);
     const [forms, setForms] = useState(null);
 
     console.log(setIsNewTaskPanel);
@@ -93,7 +95,7 @@ export default function ModifyTaskInputTable({ object=null, attributes, setIsNew
         console.log(response);
         if(response.isSuccess){
                 response.result.forEach(form => {
-                allFormsArray.push({formID: form.FormID, name: form.name});
+                allFormsArray.push({recordingID: form.formID, type: form.name}); //to be able to reuse ValidatedInput
             });
             //TODO: add retrieval of values from the database
             setForms(allFormsArray);
@@ -151,7 +153,7 @@ export default function ModifyTaskInputTable({ object=null, attributes, setIsNew
             'taskTime': taskAttributes[1].value, 
             'name': taskAttributes[0].value,
             'description': taskAttributes[2].value,
-            'formID': taskAttributes[3].value,
+            'formID': formAttribute.value,
             'userID': loggedinUserID,
             'isCompleted': 0
         });
@@ -194,6 +196,15 @@ export default function ModifyTaskInputTable({ object=null, attributes, setIsNew
                 formAttCopy.value = event.target.value;
             }
         });
+
+        if(formAttribute.key === attributeID) {
+            const formAttCopy = formAttribute;
+            formAttCopy.value = event.target.value;
+            console.log(formAttCopy);
+            setFormAttribute(formAttCopy);
+            console.log(formAttribute);
+        }
+
         console.log(formAttributesCopy);
         setTaskAttributes(formAttributesCopy);
     };
@@ -239,7 +250,20 @@ export default function ModifyTaskInputTable({ object=null, attributes, setIsNew
                     } 
                     </tbody>
                 </table>*/}
-                <InputTable inputs={taskAttributes} handleChange={handleChange}/>
+                <InputTable inputs={taskAttributes} handleChange={handleChange}>
+                {   
+                    <tr key={formAttribute.key}>
+                        <td className="left">{formAttribute.label}  </td>
+                        <td className="right">
+                            <ValidatedInput type={"select"}
+                                input={formAttribute}
+                                handleChange={handleChange}
+                                //defaultValue={attribute.formID}
+                                possibleValues={forms}/>
+                        </td>
+                    </tr>
+                }
+                </InputTable>
                 {
                     //object.taskID == 0
                         //?

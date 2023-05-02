@@ -26,8 +26,11 @@ export default function NewTaskPanel({setIsNewTaskPanel, loggedUser, rerenderTas
     }
     //View
     const additionalAttributes = [
-        {key: 'description', label:'Description', value: '', type: 'text'},
-        {key: 'form', label: 'Form', value:'', type: 'number'}
+        {key: 'description', label:'Description', value: '', type: 'text'}
+      ];
+    
+    const formAttribute = [
+        {key: 'form', label: 'Form', value:'', type: 'select'}
       ];
   
       return(
@@ -42,6 +45,7 @@ export default function NewTaskPanel({setIsNewTaskPanel, loggedUser, rerenderTas
                     <ModifyTaskInputTable 
                         object={task} 
                         attributes={additionalAttributes}
+                        formAttributeInitial={formAttribute}
                         setIsNewTaskPanel={setIsNewTask}
                         loggedUser={loggedUser} 
                         rerenderTasks={rerenderTasks}/>

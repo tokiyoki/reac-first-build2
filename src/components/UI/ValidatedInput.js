@@ -1,7 +1,6 @@
 import './ValidatedInput.scss';
 
 export default function ValidatedInput({ type, input, handleChange, defaultValue, possibleValues }) {
-    
     // View
     return (
         <div>
