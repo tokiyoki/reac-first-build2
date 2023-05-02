@@ -1,7 +1,3 @@
-import { useState, useEffect } from 'react';
-import API, { callFetch } from '../api/API.js';
-import TaskPanels from '../entities/tasks/TaskPanels.js';
-
 import './InputTable.scss';
 import ValidatedInput from './ValidatedInput.js';
 

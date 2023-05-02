@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import Panel from '../../UI/Panel.js';
 import FormPanel from './FormPanel.js';
 import NewFormPanel from './NewFormPanel.js';
@@ -7,12 +6,6 @@ import './FormPanels.scss';
 
 export default function FormPanels({newForm = false, forms, rerenderForms, loggedUser }) {
     //Initialisation
-    /*const [formErrors, setFormErrors] = useState(
-        Object.keys(attributes).reduce(
-            (accum, key) => ({...accum, [key]: undefined}),
-            {}
-        )
-    );*/
 
     //Context
     const [newFormPanel, setNewFormPanel] = useState(newForm);

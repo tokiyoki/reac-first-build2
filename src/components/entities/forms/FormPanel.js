@@ -7,20 +7,14 @@ import API from '../../api/API.js';
 
 export default function FormPanel({formDetails, isFormEdit = false, rerenderForms, loggedUser}) {
     //Initialisation
-    const getFormLinesEndpoint = `/formlines/${formDetails.formID}`; //`/formlines/recordings/${formDetails.formID}`;
+    const getFormLinesEndpoint = `/formlines/${formDetails.formID}`; 
     const endpointDeleteFormLines = `/formlines/${formDetails.formID}`;
     const endpointDeleteFormDetails = `/forms/${formDetails.formID}`;
-    //const getRecordingByIdEndpoint = `/recordings/`
+
     //State
     const [form, setForm] = useState(formDetails);
     const [isEditForm, setIsEditForm] = useState(isFormEdit);
     const [additionalAttributes, setAdditionalAttributes] = useState(null);
-    /*const [formErrors, setFormErrors] = useState(
-        Object.keys(attributes).reduce(
-            (accum, key) => ({...accum, [key]: undefined}),
-            {}
-        )
-    );*/
 
     //Context
 
@@ -53,12 +47,6 @@ export default function FormPanel({formDetails, isFormEdit = false, rerenderForm
     const rerenderFormLines = () => {
         apiCallGetAdditionalAttributes(getFormLinesEndpoint);
     };
-    //listen to events that change form content
-    /*useEffect(()=>{
-        window.addEventListener("formsnumberchanged", (event) => {
-            apiCallGetAdditionalAttributes(getFormLinesEndpoint);
-        });
-      });*/
 
     const apiCallDeleteFormLines = async (endpoint) => {
         console.log(endpoint);
@@ -85,11 +73,6 @@ export default function FormPanel({formDetails, isFormEdit = false, rerenderForm
         rerenderForms();
     };
 
-    /*const rerenderForms = async () => {
-        //send event task completed
-        const event = new Event('formsnumberchanged');
-        window.dispatchEvent(event);
-    };*/
     //View
       return(
         <Panel 

@@ -53,20 +53,10 @@
       }
     };
 
-    //listen to events that change number of forms]
-    /*useEffect(()=>{
-      window.addEventListener("formsnumberchanged", (event) => {
-        apiCallGetForms(getFormsEndpoint);
-      });
-    });*/
-
     const rerenderForms = async () => {
       console.log("INSIDE RERENDERING");
       await apiCallGetForms(getFormsEndpoint);
     };
-
-    //get initial list of forms
-    //useEffect(() => { apiCallGetForms(getFormsEndpoint) }, []);
 
     //View
     return(

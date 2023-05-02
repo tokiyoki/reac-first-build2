@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import API, { callFetch } from '../../api/API.js';
-import TaskPanels from '../tasks/TaskPanels.js';
 import { useNavigate } from 'react-router-dom';
 
 import '../../UI/InputTable.scss';
@@ -24,70 +23,13 @@ export default function ModifyTaskInputTable({ object=null, attributes, formAttr
         {key: 'taskTime', label:'Task Time', value: '00:00:00', type: 'time'},
          ...attributes];
 
-    console.log(newAttributes);
     // State
-    //const [taskName, setTaskName] = useState();
-    //const [taskTime, setTaskTime] = useState();
     const [taskAttributes, setTaskAttributes] = useState(newAttributes);
     const [formAttribute, setFormAttribute] = useState(formAttributeInitial);
     const [forms, setForms] = useState(null);
 
-    console.log(setIsNewTaskPanel);
     // Context
     // Methods
-    /*const getFormLines = async () => {
-        console.log(object);
-        console.log(attributes);
-        let newFormAttributesArray = [];
-        let attributesNew =[];
-        //essential subset of a form contents
-        if(!attributes){
-            attributesNew = [{id:'Attribute 1', label:'Attribute 1', recordingID: 1}];
-        } else {
-            let i = 1;
-            attributes.forEach((attribute)=>{
-                attributesNew.push({id: 'Attribute '+i, label: 'Attribute ' + i, value: object['attribute'+i], recordingID: object['attrID'+i]});
-                i++;
-            });
-        }
-
-        attributesNew.forEach(function(attribute){
-            let value = attribute.value ? attribute.value : "";
-
-            newFormAttributesArray.push({key:attribute.id, label: attribute.label, value: value, recordingID: attribute.recordingID});
-        });
-
-        setTaskAttributes(newFormAttributesArray);
-    };*/
-
-    //useEffect(() => { getFormLines() }, []);
-
-    /*const addFormAttribute = async () => {
-        let newFormAttributesArray = [...taskAttributes];
-        console.log(newFormAttributesArray);
-        let attributeID = newFormAttributesArray.length + 1;
-        //essential subset of a form contents
-        let attributes = [{id:'Attribute ' + attributeID, label:'Attribute ' + attributeID, recordingID: 1}];
-
-        attributes.forEach(function(attribute){
-            newFormAttributesArray.push({key:attribute.id, label: attribute.label, recordingID: attribute.recordingID});
-        });
-
-        setTaskAttributes(newFormAttributesArray);
-    };*/
-
-    /*const getRecordings = async (endpoint) => {
-        let allRecordingsArray = [];
-        
-        const response = await API.get(endpoint);
-        console.log(response);
-        response.result.forEach(recording => {
-            allRecordingsArray.push({recordingID: recording.recordingID, type: recording.type});
-        });
-        //TODO: add retrieval of values from the database
-        setRecordings(allRecordingsArray);
-    };*/
-    
     const getForms = async (endpoint) => {
         let allFormsArray = [];
         
@@ -105,47 +47,6 @@ export default function ModifyTaskInputTable({ object=null, attributes, formAttr
     };
 
     useEffect(() => { getForms(endpointGetForms)}, []);
-
-    /*const apiCallSaveFormLines = async (endpoint, newFormID) => {
-        taskAttributes.forEach( async (attribute) => {
-            console.log(attribute);
-            const response = await API.post(endpoint, {
-                'recordingID': attribute.recordingID,
-                'formID': newFormID
-            });
-            
-        });
-    };
-
-    const apiCallSaveFormDetails = async (endpoint) => {
-        const response = await API.post(endpoint, {
-            'name': taskName,
-            'userID': loggedinUserID
-        });
-        console.log(response);
-
-        return response;
-    };
-
-    
-
-    const saveFormChanges = async () => {
-        //TODO: check for errors
-        //remove the current form
-        await deleteFormLines();
-        //save updated form info
-        await apiCallSaveFormLines(endpointSaveFormLine, object.formID);
-
-        setIsEditForm(false);
-        
-        rerenderForms();
-    };
-
-    
-
-    
-
-    */
 
     const apiCallSaveTaskDetails = async (endpoint) => {
         console.log(attributes);
@@ -209,47 +110,13 @@ export default function ModifyTaskInputTable({ object=null, attributes, formAttr
         setTaskAttributes(formAttributesCopy);
     };
 
-    /*const handleNameChange = (event) => {
-        setTaskName(event.target.value);
-    };
-
-    const handleTimeChange = (event) => {
-        setTaskTime(event.target.value);
-    };*/
-
-    /*const rerenderTasks = async () => {
-        //send event task completed
-        const event = new Event('tasksnumberchanged');
-        window.dispatchEvent(event);
-    };*/
-
-    //{ formErrors[attribute.key] !== undefined ? formErrors[attribute.key] : "" }
+    
     // View
     return (
         //check if attributes were retrieved
         !(taskAttributes && forms)
             ? <p>{loadingMessage}</p>
             : <div>
-                {/*<table className="InputTable">
-                    <tbody>
-                    {
-                            taskAttributes.map((attribute) => {
-                                return (
-                                    <tr key={attribute.key}>
-                                        <td className="left">{attribute.label}  </td>
-                                        <td className="right">
-                                            <input onChange={ event => handleChange(event, attribute.key) }
-                                                   value={attribute.value} 
-                                                   placeholder="" >
-
-                                            </input>
-                                        </td>
-                                    </tr>
-                                )
-                            })
-                    } 
-                    </tbody>
-                </table>*/}
                 <InputTable inputs={taskAttributes} handleChange={handleChange}>
                 {   
                     <tr key={formAttribute.key}>
@@ -265,14 +132,10 @@ export default function ModifyTaskInputTable({ object=null, attributes, formAttr
                 }
                 </InputTable>
                 {
-                    //object.taskID == 0
-                        //?
                         <div>
                             <button onClick={() => submitTask()}>Submit</button>
                             <button onClick={() => createNewForm()}>New form</button>
                         </div>
-                        //:
-                        //<button onClick={() => saveTaskChanges()}>Save</button>
                 }
             </div>
     );

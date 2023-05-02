@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import API, { callFetch } from '../../api/API.js';
-import TaskPanels from '../tasks/TaskPanels.js';
 
 import '../../UI/InputTable.scss';
 import ValidatedInput from '../../UI/ValidatedInput.js';
@@ -8,8 +7,6 @@ import ValidatedInput from '../../UI/ValidatedInput.js';
 export default function ModifyFormInputTable({ object = null, formErrors, setIsNewTaskForm, setIsEditForm, attributes = null, deleteFormLines, rerenderForms, loggedUser, rerenderFormLines }) {
     //Initialisation
     const loggedinUserID = loggedUser.userID;
-    //const endpointSaveForm = `/formlines/${formID}`;
-    //const endpointCompleteTask = `/formlines/${formID}`;
     const endpointRecordings = `/recordings/`;
     const endpointSaveForm = `/forms/`;
     const endpointSaveFormLine = `/formlines/`;
@@ -71,7 +68,6 @@ export default function ModifyFormInputTable({ object = null, formErrors, setIsN
         response.result.forEach(recording => {
             allRecordingsArray.push({recordingID: recording.recordingID, type: recording.type});
         });
-        //TODO: add retrieval of values from the database
         setRecordings(allRecordingsArray);
     };
 
@@ -100,8 +96,6 @@ export default function ModifyFormInputTable({ object = null, formErrors, setIsN
     };
 
     const submitForm = async () => {
-        //TODO: check for errors
-        
         //save form info
         let response1 = await apiCallSaveFormDetails(endpointSaveForm);
 
@@ -119,7 +113,6 @@ export default function ModifyFormInputTable({ object = null, formErrors, setIsN
     };
 
     const saveFormChanges = async () => {
-        //TODO: check for errors
         //remove the current form
         await deleteFormLines();
         //save updated form info
@@ -152,13 +145,6 @@ export default function ModifyFormInputTable({ object = null, formErrors, setIsN
         setFormName(event.target.value);
     };
 
-    /*const rerenderForms = async () => {
-        //send event task completed
-        const event = new Event('formsnumberchanged');
-        window.dispatchEvent(event);
-    };*/
-
-    //{ formErrors[attribute.key] !== undefined ? formErrors[attribute.key] : "" }
     // View
     return (
         //check if attributes were retrieved
@@ -183,18 +169,6 @@ export default function ModifyFormInputTable({ object = null, formErrors, setIsN
                                         <tr key={attribute.key}>
                                             <td className="left">{attribute.label}  </td>
                                             <td className="right">
-                                                {/*<select onChange={ event => handleChange(event, attribute.key) } 
-                                                        defaultValue={attribute.recordingID}>
-                                                    {
-                                                        recordings.map((recording) => {
-                                                            return (
-                                                                <option key={recording.recordingID} 
-                                                                        value = {recording.recordingID}
-                                                                            >{recording.type}</option>
-                                                            )
-                                                        })
-                                                    }
-                                                </select>*/}
                                                 {<ValidatedInput type={"select"}
                                                                 input={attribute}
                                                                 handleChange={handleChange}

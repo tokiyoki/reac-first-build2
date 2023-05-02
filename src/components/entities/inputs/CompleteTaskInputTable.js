@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import API, { callFetch } from '../../api/API.js';
-import TaskPanels from '../tasks/TaskPanels.js';
 
 import InputTable from '../../UI/InputTable.js';
 import '../../UI/InputTable.scss';
@@ -84,7 +83,6 @@ export default function CompleteTaskInputTable({ object, formID, formErrors, set
 
     console.log(formAttributes);
 
-    //{ formErrors[attribute.key] !== undefined ? formErrors[attribute.key] : "" }
     // View
     return (
         //check if attributes were retrieved
@@ -93,24 +91,6 @@ export default function CompleteTaskInputTable({ object, formID, formErrors, set
             : formAttributes.length == 0
                 ? <p>The form is empty</p>
                 : <div>
-                    {/*<table className="TaskFormObjectTable">
-                        <tbody>
-                        {
-                                formAttributes.map((attribute) => {
-                                    return (
-                                        <tr key={attribute.key}>
-                                            <td className="left">{attribute.label}  </td>
-                                            <td className="right">
-                                                <input onChange={ event => handleChange(event, attribute.key) } 
-                                                    value={attribute.value} 
-                                                    placeholder=""/>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                        } 
-                    </tbody>
-                    </table>*/}
                     <InputTable inputs={formAttributes} handleChange={handleChange}/>
                     <button onClick={() => setIsTaskForm(false)}>Back</button>
                     <button onClick={() => submitForm()}>Submit</button>

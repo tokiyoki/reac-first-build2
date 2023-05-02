@@ -5,12 +5,6 @@ import ModifyFormInputTable from '../inputs/ModifyFormInputTable.js';
 export default function NewFormPanel({formDetails, setIsNewTaskForm, rerenderForms, loggedUser}) {
     //State
     const [form, setForm] = useState(formDetails);
-    /*const [formErrors, setFormErrors] = useState(
-        Object.keys(attributes).reduce(
-            (accum, key) => ({...accum, [key]: undefined}),
-            {}
-        )
-    );*/
 
     //Context
 
@@ -19,9 +13,6 @@ export default function NewFormPanel({formDetails, setIsNewTaskForm, rerenderFor
         setIsNewTaskForm(false);
     };
     //View
-    /*const additionalAttributes = [
-        {key: 'name', label:'Name'}
-      ];*/
   
       return(
         <Panel 

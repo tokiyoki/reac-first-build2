@@ -16,19 +16,15 @@ import './App.scss';
 
 function App() {
   //Initialisation
-  //const initialLoggedinUserID = 1; // 1 user id is patient, 2 user id is carer
   const getUserDependentsEndpoint = "/carerrequests/dependents/";
 
   //Global state
   const [mainLoggedinUser, setMainLoggedinUser] = useState(null);
   const [loggedinUser, setLoggedinUser] = useState(null);
   const [userDependentIDs, setUserDependentIDs] = useState([]);
-  //const [loggedinUserType, setLoggedinUserType] = useState(null);
 
   //Methods
   const logUserIn = async (user) => {
-    //setLoggedinUserID(user.userID);
-    //setLoggedinUserType(user.type)
     setMainLoggedinUser(user);
     setLoggedinUser(user);
     getUserDependents(getUserDependentsEndpoint + user.userID);
@@ -41,12 +37,10 @@ function App() {
   const getUserDependents = async (endpoint)=> {
     const response = await API.get(endpoint, 'GET');
       response.isSuccess
-        //? setLoggedinUserType(response.result.type)
         ? setUserDependentIDs(response.result)
         : console.log(response.message);
 };
 
-  //useEffect(() => { retrieveUserType(getUserEndpoint) } , []);//endpoint
   
 
   return (

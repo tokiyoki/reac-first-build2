@@ -9,8 +9,6 @@
    */
   function MyTasks({user={type:'patient', userID:1}, mainUser}) {
     //Initialisation
-    //const initialLoggedinUserID = (user=="patient") ? 1 : 2; // 1 user id is patient, 2 user id is carer
-    
     //needs to be initialised first
     const getEndpoint = (loggedinUserID) => {
       let endpoint = `/tasks/users/notcompleted/${loggedinUserID}`;
@@ -19,9 +17,6 @@
 
     //State
     const [tasks, setTasks, loadingMessage, setloadingMessage] = useLoad(getEndpoint(user.userID));
-    //const [loggedinUserID, setLoggedinUserID] = useState(mainLoggedinUserID);
-    //const [tasks, setTasks] = useState(null);
-    //const [loadingMessage, setloadingMessage] = useState('Loading records...');
 
     //Context
     //Methods
@@ -45,13 +40,6 @@
         apiCall(getEndpoint(user.userID));
       });
     });
-
-    //listen to events that change number of forms]
-    /*useEffect(()=>{
-      window.addEventListener("tasksnumberchanged", async (event) => {
-        
-      });
-    });*/
 
     const rerenderTasks = () => {
       apiCall(getEndpoint(user.userID));

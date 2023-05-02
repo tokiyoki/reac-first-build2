@@ -6,12 +6,6 @@ import './TaskPanels.scss';
 
 export default function TaskPanels({ newTask = false, tasks, loggedUser, mainLoggedUser, rerenderTasks }) {
     //Initialisation
-    /*const [formErrors, setFormErrors] = useState(
-        Object.keys(attributes).reduce(
-            (accum, key) => ({...accum, [key]: undefined}),
-            {}
-        )
-    );*/
 
     //Context
     const [isNewTaskPanel, setIsNewTaskPanel] = useState(newTask);

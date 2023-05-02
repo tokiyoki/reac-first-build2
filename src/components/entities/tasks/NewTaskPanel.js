@@ -1,17 +1,8 @@
-import { useState } from 'react';
 import Panel from '../../UI/Panel.js';
-import ObjectTable from '../../UI/ObjectTable.js';
 import ModifyTaskInputTable from '../inputs/ModifyTaskInputTable.js';
 
 export default function NewTaskPanel({setIsNewTaskPanel, loggedUser, rerenderTasks}) {
     //State
-    //const [isTaskForm, setIsTaskForm] = useState(isForm);
-    /*const [formErrors, setFormErrors] = useState(
-        Object.keys(attributes).reduce(
-            (accum, key) => ({...accum, [key]: undefined}),
-            {}
-        )
-    );*/
 
     //Context
     let task = {

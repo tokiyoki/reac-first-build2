@@ -9,12 +9,6 @@ export default function TaskPanel({ task, isForm = false, loggedMain, loggedUser
     const removeTaskEndpoint = '/tasks/' + task.taskID;
     //State
     const [isTaskForm, setIsTaskForm] = useState(isForm);
-    /*const [formErrors, setFormErrors] = useState(
-        Object.keys(attributes).reduce(
-            (accum, key) => ({...accum, [key]: undefined}),
-            {}
-        )
-    );*/
 
     //Context
     //Methods
@@ -28,12 +22,6 @@ export default function TaskPanel({ task, isForm = false, loggedMain, loggedUser
         const response = await API.delete(endpoint, {});
         console.log(response);
     };
-
-    /*const rerenderTasks = async () => {
-        //send event task completed
-        const event = new Event('tasksnumberchanged');
-        window.dispatchEvent(event);
-    };*/
 
     //View
     const additionalAttributes = [
